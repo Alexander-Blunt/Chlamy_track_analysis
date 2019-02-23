@@ -14,11 +14,12 @@
 #   limitations under the License.                                             #
 #==============================================================================#
 
-# A program to read in a track from a swimming cell and output its speed as a
-#  function of time.
+# A program to read in a track from a swimming cell and output its velocity and
+#  speed as a function of time.
 import numpy as np
 
 input_file = 'track350_1.txt'
+output_file = input_file.replace('track','velocity')
 
 # Read in the input file, and get the number of points in the track
 track = np.loadtxt(input_file)
@@ -41,6 +42,6 @@ for i in range(0,num_points-1):
                                  track[i+1,j+3])
    velocity[i,4] = (velocity[i,1]**2 + velocity[i,2]**2 + velocity[i,3]**2)**0.5
 
-print(velocity)
+np.savetxt(output_file,velocity,fmt='%10.10g')
 
 #EOF
