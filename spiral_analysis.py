@@ -28,7 +28,8 @@ num_points = track.shape[0]
 #Initialise output array with column layout: time curvature
 curvature = np.zeros( (num_points-2,2) )
 
-# Calculating curvature from track position coordinates
+#========== Calculating curvature from track position coordinates =============#
+
 # start with tangent calculation
 def calc_tan( x1,x2,y1,y2,z1,z2 ):
    tan = np.array([x2-x1,y2-y1,z2-z1])
