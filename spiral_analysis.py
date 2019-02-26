@@ -25,7 +25,7 @@ output_file = input_file.replace('track','curvature')
 track = np.loadtxt(input_file,dtype='float')
 num_points = track.shape[0]
 
-#Initialise output array, column layout: time curvature
+#Initialise output array with column layout: time curvature
 curvature = np.zeros( (num_points-2,2) )
 
 # Calculating curvature from track position coordinates
@@ -56,8 +56,8 @@ for i in range(0,num_points-2):
    ds = ( (x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2 )**0.5
    curv_vect = (tan2-tan1) /ds
 
-   # calculate time and curvature scalar
-   curvature[i,0] = ( track[i,0] + track[i+2,0] ) /2
+   # calculate time and curvature scalar and store in curvature array
+   curvature[i,0] = ( track[i,0] + 2*track[i+1,0] + track[i+2,0] ) /4 # time
    curvature[i,1] = ( curv_vect[0]**2 + curv_vect[1]**2 + curv_vect[2]**2 )**0.5
 
 np.savetxt(output_file,curvature,fmt='%10.10g')
