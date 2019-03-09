@@ -32,38 +32,33 @@ curvature = np.zeros( (num_points-2, 2) )
 
 # Function to calculate the tangent to the spiral at a point between x1, y1, z1
 # and x2, y2, z2
-def calc_tan( x1, x2, y1, y2, z1, z2 ):
-   tan = np.array([x2-x1, y2-y1, z2-z1])
-   ds = ( tan[0]**2 + tan[1]**2 + tan[2]**2 )**0.5
-   tan /= ds
+def calc_tan( point1, point2 ):
+   tan = point2 - point1
+   distance = ( tan[0]**2 + tan[1]**2 + tan[2]**2 )**0.5
+   tan /= distance
    return tan
 
 # Function to calculate the curvature vector between tangents tan1 and tan2
-def calc_curv( x1, x2, x3, y1, y2, y3, z1, z2, z3 ):
-   tan1 = calc_tan(x1, x2, y1, y2, z1, z2)
-   tan2 = calc_tan(x2, x3, y2, y3, z2, z3)
+def calc_curv( point1, point2, point3 ):
+   tan1 = calc_tan(point1, point2)
+   tan2 = calc_tan(point2, point3)
 
    # calculate which two points the tangent was calculated for
-   x1 = (   track[i,4] + track[i+1,4] ) /2
-   x2 = ( track[i+1,4] + track[i+2,4] ) /2
-   y1 = (   track[i,5] + track[i+1,5] ) /2
-   y2 = ( track[i+1,5] + track[i+2,5] ) /2
-   z1 = (   track[i,6] + track[i+1,6] ) /2
-   z2 = ( track[i+1,6] + track[i+2,6] ) /2
+   tan_point1 = point2 - point1
+   tan_point2 = point2 - point3
 
    # calculate distance along the curve and calculate curvature vector
-   ds = ( (x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2 )**0.5
-   curv_vect = (tan2-tan1) /ds
+   disp = tan_point2 - tan_point1 # displacement between the points on the curve
+   distance = ( disp[0]**2 + disp[1]**2 + disp[2]**2 )**0.5
+   curv_vect = (tan2-tan1) / distance
    return curv_vect
 
 for i in range(0, num_points-2):
-   curv_vect = calc_curv(track[i,4], track[i+1,4], track[i+2,4], track[i,5],
-                         track[i+1,5], track[i+2,5], track[i,6], track[i+1,6],
-                         track[i+2,6])
+   curv_vect = calc_curv(track[i,3:], track[i+1,3:], track[i+2,3:])
 
    # calculate time and curvature scalar and store in curvature array
    curvature[i,0] = ( track[i,0] + 2*track[i+1,0] + track[i+2,0] ) /4 # time
-   curvature[i,1] = ( curv_vect[0]**2 + curv_vect[1]**2 + curv_vect[2]**2 )**0.5
+   curvature[i,1] = ( curv_vect[0]**2 + curv_vect[1]**2 + curv_vect[2]**2 ) **0.5
 
 np.savetxt(output_file, curvature, fmt='%10.10g')
 
