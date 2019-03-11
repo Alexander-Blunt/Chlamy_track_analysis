@@ -21,12 +21,15 @@ class TestCurvature(unittest.TestCase):
 
         # Check that curvature is constant throughout the spiral
         diff = 1e-10 # threshold for comparison of floats
-        for i in range(0, num_points-3):
-            curv1 = sa.calc_curv(spiral[i,:], spiral[i+1,:], spiral[i+2,:])
-            curv1 = ( curv1[0]**2 + curv1[1]**2 + curv1[2]**2 ) **0.5
+        success = True # assume curvature is constant
+        # set first curvature to compare the rest of the spiral to
+        curv1 = sa.calc_curv(spiral[0,:], spiral[0+1,:], spiral[0+2,:])
+        curv1 = ( curv1[0]**2 + curv1[1]**2 + curv1[2]**2 ) **0.5
+        for i in range(1, num_points-3):
             curv2 = sa.calc_curv(spiral[i+1,:], spiral[i+2,:], spiral[i+3,:])
             curv2 = ( curv2[0]**2 + curv2[1]**2 + curv2[2]**2 ) **0.5
-            success = (curv2 - curv1) < diff
+            if abs(curv2 - curv1) > diff:
+                success = False
 
         self.assertTrue(success, 'Curvature must be constant')
 
