@@ -46,10 +46,9 @@ def calc_curv( point1, point2, point3 ):
     return curv_vect
 
 #==============================================================================
-# Function to read all points in a file and output the curvature to a new file
+# Function to read all points in a file and return the curvature as an array
 #==============================================================================
 def output_curv( input_file ):
-    output_file = input_file.replace('track', 'curvature')
 
     # Read in the input file and get the number of points in the track
     track = np.loadtxt(input_file, dtype='float')
@@ -63,10 +62,8 @@ def output_curv( input_file ):
 
         # calculate time and curvature scalar and store in curvature array
         curvature[i,0] = ( track[i,0] + 2*track[i+1,0] + track[i+2,0] ) /4
-        curvature[i,1] =
-                ( curv_vect[0]**2 + curv_vect[1]**2 + curv_vect[2]**2 ) **0.5
-
-    # Output curvature array to file
-    np.savetxt(output_file, curvature, fmt='%10.10g')
+        curvature[i,1] = ( curv_vect[0]**2 + curv_vect[1]**2 + curv_vect[2]**2 
+                         ) **0.5
+    return curvature
 
 #EOF
