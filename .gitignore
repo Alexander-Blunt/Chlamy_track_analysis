@@ -108,3 +108,6 @@ venv.bak/
 
 # data
 *.txt
+
+# figures
+*.eps
