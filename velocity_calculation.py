@@ -30,7 +30,7 @@ def calc_speed(time1,time2,pos1,pos2):
 #==============================================================================
 # Function to output speed data to file
 #==============================================================================
-def output_velocity( input_file )
+def output_velocity( input_file ):
     # Read in the input file, and get the number of points in the track
     track = np.loadtxt(input_file)
     num_points = track.shape[0]
@@ -43,8 +43,8 @@ def output_velocity( input_file )
         for j in range(1,4): # Find speed in each direction from splined track
             velocity[i,j] = calc_speed(track[i,0],track[i+1,0],track[i,j+3],
                                        track[i+1,j+3])
-        velocity[i,4] = 
-                (velocity[i,1]**2 + velocity[i,2]**2 + velocity[i,3]**2)**0.5
+        velocity[i,4] = (velocity[i,1]**2 + velocity[i,2]**2 + 
+                         velocity[i,3]**2)**0.5
 
     return velocity
 #EOF
