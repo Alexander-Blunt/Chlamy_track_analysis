@@ -25,10 +25,12 @@ from pathlib import Path
 # Read in data from files
 #==============================================================================
 # Read in configuration file
-config_file = 'hist_paths.txt'
-path_list = np.loadtxt(config_file, dtype=str, skiprows=1)
+config_file = 'hist_config.csv'
+path_list = np.loadtxt(config_file, dtype=str, delimiter=',', skiprows=1, 
+                       ndmin=2)
 
-num_paths = path_list.shape[0] # set number of paths to be read from
+# Set number of paths to be read from
+num_paths = path_list.shape[0]
 
 # Declare empty array to fill with data for plotting
 data = np.empty(0, dtype=float)
@@ -41,27 +43,27 @@ for i in range(0, num_paths):
 
     # Read data
     for item in file_paths:
-        content = np.loadtxt(item, dtype=str, usecols=column)
+        content = np.loadtxt(item, dtype=float, usecols=column)
         data = np.append(data, content)
 
 #==============================================================================
 # Plot data as histogram
 #==============================================================================
 # Set parameters for histogram plot
+plt.autoscale(enable=True, tight=True)
 fig, ax = plt.subplots() # set up figure and axes objects for plotting
-num_bins = 20 # number of bins in histogram
+num_bins = 50 # number of bins in histogram
 hist_file = 'vel_hist.eps'
 
 # Create histogram
-n, bins, patches = ax.hist(data, num_bins, density=False)
+n, bins, patches = ax.hist(data, num_bins, density=False, edgecolor='black')
 
 # Plot histogram
 ax.plot(bins)
-ax.set_xlabel(r'Speed ($\mu$m/s)')
+ax.set_xlabel('Speed ($\mu$m/s)')
 ax.set_ylabel('Number of Cells')
 ax.set_title('Histogram of C.reinhardtii cell velocities')
 
-fig.tight_layout() # tweak spacing to prevent ylabel clipping
 plt.savefig(hist_file)
 
 #EOF
