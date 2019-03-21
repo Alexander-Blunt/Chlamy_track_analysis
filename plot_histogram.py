@@ -50,7 +50,6 @@ for i in range(0, num_paths):
 # Plot data as histogram
 #==============================================================================
 # Set parameters for histogram plot
-plt.autoscale(enable=True, tight=True)
 fig, ax = plt.subplots() # set up figure and axes objects for plotting
 num_bins = 50 # number of bins in histogram
 hist_file = 'vel_hist.eps'
@@ -59,7 +58,6 @@ hist_file = 'vel_hist.eps'
 n, bins, patches = ax.hist(data, num_bins, density=False, edgecolor='black')
 
 # Plot histogram
-ax.plot(bins)
 ax.set_xlabel('Speed ($\mu$m/s)')
 ax.set_ylabel('Number of Cells')
 ax.set_title('Histogram of C.reinhardtii cell velocities')
