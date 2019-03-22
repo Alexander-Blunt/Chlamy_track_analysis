@@ -20,12 +20,17 @@ import spiral_analysis as sa
 import velocity_calculation as vc
 from pathlib import Path
 
+#==============================================================================
 # Read in the list of paths to search for tracks
-path_list = 'path_list.txt'
-in_path = np.loadtxt(path_list, dtype=str, skiprows=1)
+#==============================================================================
+path_list = 'path_list.csv'
+in_path = np.loadtxt(path_list, dtype=str, delimiter=',', skiprows=1)
 
+#==============================================================================
 # Search paths for tracks
+#==============================================================================
 for i in range(0, in_path.size):
+    # Create array of paths to be read from
     track_paths = np.array( sorted( Path(in_path[i]).glob('track*.txt') ) )
 
     # Create array to store output paths for each track
