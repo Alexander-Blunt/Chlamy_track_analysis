@@ -111,3 +111,8 @@ venv.bak/
 
 # figures
 *.eps
+
+# VIM swap files
+*.swp
+
+#EOF
