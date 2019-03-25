@@ -22,7 +22,32 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 #==============================================================================
-# Read in data from files
+# Function to plot data as histogram
+#==============================================================================
+# data = np.array of floats, out_file = string containing output file name
+#==============================================================================
+def plot_histogram( data, out_file, graph_title, x_label, y_label ):
+    # Set parameters for histogram plot
+    fig, ax = plt.subplots() # set up figure and axes objects for plotting
+
+    # Automatically calculate bin edges
+    bin_edges = np.histogram_bin_edges( data, bins='doane', 
+                                  range=( np.nanmin(data),np.nanmax(data) ) )
+
+    # Create histogram
+    n, bins, patches = ax.hist(data, bin_edges, density=False,
+                               edgecolor='black')
+
+    # Set axis and graph titles
+    ax.set_title(graph_title)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+
+    # Save graph to file
+    plt.savefig(out_file)
+
+#==============================================================================
+# Read in data from files and plot histogram
 #==============================================================================
 # Read in configuration file
 config_file = 'hist_config.csv'
@@ -46,22 +71,11 @@ for i in range(0, num_paths):
         content = np.loadtxt(item, dtype=float, usecols=column)
         data = np.append(data, content)
 
-#==============================================================================
-# Plot data as histogram
-#==============================================================================
-# Set parameters for histogram plot
-fig, ax = plt.subplots() # set up figure and axes objects for plotting
-num_bins = 50 # number of bins in histogram
-hist_file = 'vel_hist.eps'
+out_file = 'curv_hist(D).eps'
+graph_title = ''
+x_label = 'Curvature'
+y_label = 'Number of Instances'
 
-# Create histogram
-n, bins, patches = ax.hist(data, num_bins, density=False, edgecolor='black')
-
-# Plot histogram
-ax.set_xlabel('Speed ($\mu$m/s)')
-ax.set_ylabel('Number of Cells')
-ax.set_title('Histogram of C.reinhardtii cell velocities')
-
-plt.savefig(hist_file)
+plot_histogram( data, out_file, graph_title, x_label, y_label )
 
 #EOF
