@@ -13,7 +13,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #==============================================================================
-# A program to output a histogram of data from an input list of directories
+# A program to output a histogram of curvature data from an input list of
+# directories
 #==============================================================================
 
 import matplotlib
@@ -50,7 +51,7 @@ def plot_histogram( data, out_file, graph_title, x_label, y_label ):
 # Read in data from files and plot histogram
 #==============================================================================
 # Read in configuration file
-config_file = 'hist_config.csv'
+config_file = 'hist_config_curv.csv'
 path_list = np.loadtxt(config_file, dtype=str, delimiter=',', skiprows=1, 
                        ndmin=2)
 
