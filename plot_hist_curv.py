@@ -32,8 +32,8 @@ def plot_histogram( data, out_file, graph_title, x_label, y_label ):
     fig, ax = plt.subplots() # set up figure and axes objects for plotting
 
     # Automatically calculate bin edges
-    bin_edges = np.histogram_bin_edges( data, bins='doane', 
-                                  range=( np.nanmin(data),np.nanmax(data) ) )
+    bin_edges = np.histogram_bin_edges( data, bins='doane',
+                                        range=( 0, np.nanmax(data) ) )
 
     # Create histogram
     n, bins, patches = ax.hist(data, bin_edges, density=False,
