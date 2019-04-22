@@ -37,7 +37,7 @@ def plot_histogram( data, out_file, graph_title, x_label, y_label ):
 
     # Create histogram
     n, bins, patches = ax.hist(data, bin_edges, density=False,
-                               edgecolor='black')
+                               edgecolor='black', log=True)
 
     # Set axis and graph titles
     ax.set_title(graph_title)
@@ -72,10 +72,10 @@ for i in range(0, num_paths):
         content = np.loadtxt(item, dtype=float, usecols=column)
         data = np.append(data, content)
 
-out_file = 'curv_hist(D).eps'
+out_file = 'curv_hist.eps'
 graph_title = ''
 x_label = 'Curvature'
-y_label = 'Number of Instances'
+y_label = 'Frequency'
 
 plot_histogram( data, out_file, graph_title, x_label, y_label )
 

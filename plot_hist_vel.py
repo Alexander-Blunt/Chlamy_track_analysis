@@ -72,10 +72,10 @@ for i in range(0, num_paths):
         content = np.loadtxt(item, dtype=float, usecols=column)
         data = np.append(data, content)
 
-out_file = 'vel_hist(P).eps'
+out_file = 'vel_hist.eps'
 graph_title = ''
 x_label = 'Speed $(\mu m s^{-1})$'
-y_label = 'Number of Instances'
+y_label = 'Frequency'
 
 plot_histogram( data, out_file, graph_title, x_label, y_label )
 
