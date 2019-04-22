@@ -70,6 +70,13 @@ for i in range(0, num_paths):
     # Read data
     for item in file_paths:
         content = np.loadtxt(item, dtype=float, usecols=column)
+
+        # Test for NaN
+        for n in content:
+            if np.isnan(n):
+                print( "Warning: NaN encountered in ", item )
+                break
+
         data = np.append(data, content)
 
 out_file = 'curv_hist.eps'
