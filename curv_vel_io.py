@@ -47,13 +47,16 @@ for i in range(0, in_path.size):
     #==========================================================================
     # Output curvatures and velocities for all tracks in current path
     #==========================================================================
-    for track in track_paths:
-        track_name = Path(track).name
+    for input_file in track_paths:
+        track_name = Path(input_file).name
         file_name = track_name.replace('track', 'curv')
         out_path = Path(curv_dir).joinpath(file_name)
 
+        # Read in the input file
+        track = np.loadtxt(input_file, dtype='float')
+
         # Calculate curvatures and output to file
-        curvature = sa.output_curv(track)
+        curvature = sa.output_curv(track, 10)
         np.savetxt(Path(out_path), curvature, fmt='%10.10g')
 
         #Output velocities
@@ -61,7 +64,7 @@ for i in range(0, in_path.size):
         out_path = Path(vel_dir).joinpath(file_name)
 
         # Calculate velocities and output to file
-        velocity = vc.output_velocity(track)
+        velocity = vc.output_velocity(input_file)
         np.savetxt(Path(out_path), velocity, fmt='%10.10g')
 
 #EOF

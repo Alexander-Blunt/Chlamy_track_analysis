@@ -36,8 +36,8 @@ def calc_curv( point1, point2, point3 ):
     tan2 = calc_tan(point2, point3)
 
     # calculate which two points the tangent was calculated for
-    tan_point1 = point2 - point1
-    tan_point2 = point2 - point3
+    tan_point1 = ( point1 + point2 )/2
+    tan_point2 = ( point2 + point3 )/2
 
     # calculate distance along the curve and calculate curvature vector
     disp = tan_point2 - tan_point1 # displacement between points on the curve
@@ -46,23 +46,24 @@ def calc_curv( point1, point2, point3 ):
     return curv_vect
 
 #==============================================================================
-# Function to read all points in a file and return the curvature as an array
+# Function to read an array of points and return the curvature as an array
 #==============================================================================
-def output_curv( input_file ):
-
-    # Read in the input file and get the number of points in the track
-    track = np.loadtxt(input_file, dtype='float')
+def output_curv( track, step ):
+    # Get number of points in track
     num_points = track.shape[0]
+    num_outputs = num_points // step - 1
 
     #Initialise output array with column layout: time curvature
-    curvature = np.zeros( (num_points-2, 2) )
+    curvature = np.zeros( (num_outputs, 2) )
 
-    for i in range(0, num_points-2):
-        curv_vect = calc_curv(track[i,3:], track[i+1,3:], track[i+2,3:])
+    for i in range(0, num_points-2*step, step):
+        j = i // step
+        curv_vect = calc_curv(track[i,4:], track[i+step,4:],
+                              track[i+2*step,4:])
 
         # calculate time and curvature scalar and store in curvature array
-        curvature[i,0] = ( track[i,0] + 2*track[i+1,0] + track[i+2,0] ) /4
-        curvature[i,1] = ( curv_vect[0]**2 + curv_vect[1]**2 + curv_vect[2]**2 
+        curvature[j,0] = ( track[i,0] + 2*track[i+1,0] + track[i+2,0] ) /4
+        curvature[j,1] = ( curv_vect[0]**2 + curv_vect[1]**2 + curv_vect[2]**2 
                          ) **0.5
     return curvature
 

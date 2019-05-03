@@ -50,11 +50,15 @@ class TestCurvature(unittest.TestCase):
     #--------------------------------------------------------------------------
     def test_value(self):
         success = True # assume curvature is correct
+
         # Set radius of circle
         rad = 2.0
+        circle = spiral
+        circle[:,0] = 0.0
+        circle[:,1] *= rad
+        circle[:,2] *= rad
+
         for i in range(0, num_points-3):
-            circle = spiral
-            circle[:,0] = 0.0
             curv = sa.calc_curv(circle[i,:], circle[i+1,:], circle[i+2,:])
             curv = ( curv[0]**2 + curv[1]**2 + curv[2]**2 ) **0.5
             if abs(curv - 1/rad) > 1/num_points:
@@ -75,7 +79,7 @@ class TestCurvature(unittest.TestCase):
         for i in range(0, num_points-3):
             # Calculate initial curvature
             curv1 = sa.calc_curv(spiral[i,:], spiral[i+1,:], spiral[i+2,:])
-            curv1 = ( curv1[0]**2 + curv1[1]**2 + curv1[2]**2) **0.5
+            curv1 = (curv1[0]**2 + curv1[1]**2 + curv1[2]**2) **0.5
 
             # Rotate matrix points
             point0 = np.matmul(rot, spiral[i,:])
@@ -83,12 +87,36 @@ class TestCurvature(unittest.TestCase):
             point2 = np.matmul(rot, spiral[i+2,:])
 
             curv2 = sa.calc_curv(point0, point1, point2)
-            curv2 = ( curv2[0]**2 + curv2[1]**2 + curv2[2]**2) **0.5
+            curv2 = (curv2[0]**2 + curv2[1]**2 + curv2[2]**2) **0.5
 
             if abs(curv2-curv1) > diff:
                 success = False
 
         self.assertTrue(success, 'Curvature must be constant on rotation')
+
+    #--------------------------------------------------------------------------
+    # Test curvature output function
+    #--------------------------------------------------------------------------
+    def test_output(self):
+        # Set up input track for function
+        track = np.zeros( ( num_points, 7 ) )
+        for i in range(0, num_points):
+            track[i, 0] = i
+            track[i, 4:] = spiral[i, :]
+
+        curvature = sa.output_curv(track, 1)
+        success = True
+        print(curvature)
+
+        for i in range(0, num_points-3):
+            # Calculate curvature at i
+            curv_i = sa.calc_curv(spiral[i,:], spiral[i+1,:], spiral[i+2,:])
+            curv_i = (curv_i[0]**2 + curv_i[1]**2 + curv_i[2]**2) **0.5
+            print(curv_i)
+            if abs(curvature[i,1]-curv_i) > diff:
+                success = False
+
+        self.assertTrue(success, 'Curvature output should equal curvature')
 
 if __name__ == '__main__':
     unittest.main()
