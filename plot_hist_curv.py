@@ -82,7 +82,7 @@ for i in range(0, num_paths):
 out_file = 'curv_hist.eps'
 graph_title = ''
 x_label = 'Curvature ($\mu m^{-1}$)'
-y_label = 'Probability'
+y_label = 'Frequency'
 
 plot_histogram( data, out_file, graph_title, x_label, y_label )
 
